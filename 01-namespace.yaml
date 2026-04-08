@@ -1,4 +1,4 @@
 apiVersion: v1
-kind      : Namespaces
+kind: Namespaces
 metadata:
   name: expense
