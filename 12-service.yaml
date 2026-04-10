@@ -1,5 +1,5 @@
 #Pod 1  Connect with Pod2 through Selector(Sevice)
-kind : service
+kind : Service
 apiVersion : v1
 metadata : 
   name : nginx
@@ -15,7 +15,7 @@ spec :
     targatport : 80
 ---
  # Pod2 Backend 
-kind : Port
+kind : Pod
 apiVersion : v1
 metadata :
  name : backend
