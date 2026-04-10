@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx
   # labels for Deployment resource
-  labels:
+  labels:  # Pod Selectors we given here same it is paste in the Loadbalancer as well
     app: nginx
     tier: frontend
     purpose: deployment
@@ -19,6 +19,23 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginx:1.14.2
+          image: rahul8096/nginx:1.0
           ports:
             - containerPort: 80
+---
+# Load Balancer
+
+kind : Service
+apiVersion : v1
+metadata : 
+  name : nginx
+spec :
+  type : LoadBalancer
+  selector : # here Selector acts as Service
+    app: nginx
+    tier: frontend
+    purpose: deployment
+  ports :
+  - protocol : TCP
+    port : 80 
+    targetPort : 80
