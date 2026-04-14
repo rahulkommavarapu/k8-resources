@@ -20,7 +20,7 @@ kind: Pod
 metadata:
   name: ebs-static
 spec:
-  nodeselector:
+  nodeSelector:
     topology.kubernetes.io/zone:us-east-1a  # give it Particular Node and Az
   containers:
     - name: nginx
