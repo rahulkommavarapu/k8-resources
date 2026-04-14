@@ -1,10 +1,11 @@
 # Create the Pvc For Pod
+
 apiVersion: v1
-kind: PersistentVolume
+kind: PersistentVolumeClaim
 metadata:
   name: ebs-static
 spec:
-  storageClassName: ""
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
   volumeName: ebs-static
   accessModes:
     - ReadWriteOnce
