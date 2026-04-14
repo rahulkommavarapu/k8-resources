@@ -1,0 +1,51 @@
+# Create the Pvc For Pod
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-dynamic
+spec:
+  storageClassName: "ebs-sc" # Empty string must be explicitly set otherwise default StorageClass will be set
+  volumeName: 
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 29Gi
+
+---
+# Create the Pod TO request the Pvc to pv
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-dynamic
+  labels : 
+    purpose : "ebs-dynamic-demo"
+spec:
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1a # give it Particular Node and Az
+  containers:
+    - name: nginx
+      image: nginx
+      volumeMounts: # this volume Mount bt the Pod
+        - name: persistent-storage
+          mountPath: /usr/share/nginx/html
+  volumes: # it is the Volume
+    - name: persistent-storage
+      persistentVolumeClaim:
+        claimName: ebs-dynamic
+---
+# Create the Service  For Checking Purpose
+kind : Service
+apiVersion : v1
+metadata : 
+  name : nginx-dynamic
+spec :
+  type : LoadBalancer
+  selector : # here Selector acts as Service
+    purpose: "ebs-dynamic-demo"
+  ports :
+  - protocol : TCP
+    port : 80 
+    targetPort : 80
+    nodePort : 30007
