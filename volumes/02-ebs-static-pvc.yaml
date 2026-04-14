@@ -12,3 +12,21 @@ spec:
   resources:
     requests:
       storage: 30Gi
+
+---
+# Create the Pod TO request the Pvc to pv
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-static
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      volumeMounts: # this volume Mount bt the Pod
+        - name: persistent-storage
+          mountPath: /usr/share/nginx/html
+  volumes: # it is the Volume
+    - name: persistent-storage
+      persistentVolumeClaim:
+        claimName: ebs-static
