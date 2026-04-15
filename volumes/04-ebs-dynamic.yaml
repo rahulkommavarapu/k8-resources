@@ -30,7 +30,7 @@ spec:
       volumeMounts: # this volume Mount bt the Pod
         - name: persistent-storage
           mountPath: /usr/share/nginx/html
-  volumes: # it is the Volume
+    volumes: # it is the Volume
     - name: persistent-storage
       persistentVolumeClaim:
         claimName: ebs-dynamic
