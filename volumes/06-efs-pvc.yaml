@@ -10,4 +10,41 @@ spec:
   volumeName: "efs-static"
   resources:
     requests:
-      storage: 5Gi
+      storage: 
+---
+# Create the Pod TO request the Pvc to pv
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-static
+  labels : 
+    purpose : "efs-static-demo"
+spec:
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1a # give it Particular Node and Az
+  containers:
+    - name: nginx
+      image: nginx
+      volumeMounts: # this volume Mount bt the Pod
+        - name: persistent-storage
+          mountPath: /usr/share/nginx/html
+  volumes: # it is the Volume
+    - name: persistent-storage
+      persistentVolumeClaim:
+        claimName: efs-static
+---
+# Create the Service  For Checking Purpose
+kind : Service
+apiVersion : v1
+metadata : 
+  name : nginx-1a
+spec :
+  type : LoadBalancer
+  selector : # here Selector acts as Service
+    purpose: "efs-static-demo"
+  ports :
+  - protocol : TCP
+    port : 80 
+    targetPort : 80
+    nodePort : 30007      
+
