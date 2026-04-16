@@ -10,15 +10,15 @@ spec:
   volumeName: "efs-static"
   resources:
     requests:
-      storage: 
+      storage: 5Gi
 ---
 # Create the Pod TO request the Pvc to pv
 apiVersion: v1
 kind: Pod
 metadata:
   name: efs-static
-  labels : 
-    purpose : "efs-static-demo"
+  labels:
+    purpose: "efs-static-demo"
 spec: # give it Particular Node and Az
   containers:
     - name: nginx
@@ -32,17 +32,16 @@ spec: # give it Particular Node and Az
         claimName: efs-static
 ---
 # Create the Service  For Checking Purpose
-kind : Service
-apiVersion : v1
-metadata : 
-  name : nginx-1a
-spec :
-  type : LoadBalancer
-  selector : # here Selector acts as Service
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-1a
+spec:
+  type: LoadBalancer
+  selector: # here Selector acts as Service
     purpose: "efs-static-demo"
-  ports :
-  - protocol : TCP
-    port : 80 
-    targetPort : 80
-    nodePort : 30007      
-
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30007
