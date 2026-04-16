@@ -9,7 +9,7 @@ spec:
     storage: 5Gi # Dummy we can Give How much we want
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
   csi:
