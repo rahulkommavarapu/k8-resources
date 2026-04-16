@@ -5,13 +5,13 @@ metadata:
   name: efs-static
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: ""
   volumeName: "efs-static"
   resources:
     requests:
       storage: 5Gi
- # Create the Pv for EFS     
+  # Create the Pv for EFS
 ---
 apiVersion: v1
 kind: Pod
@@ -21,16 +21,16 @@ metadata:
     purpose: "efs-static-demo"
 spec:
   containers:
-  - name: nginx
-    image: nginx
-    volumeMounts:
-    - name: persistent-storage
-      mountPath: /usr/share/nginx/html
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        - name: persistent-storage
+          mountPath: /usr/share/nginx/html
   volumes:
-  - name: persistent-storage
-    persistentVolumeClaim:
-      claimName: efs-static
- # Create the Service for the pod     
+    - name: persistent-storage
+      persistentVolumeClaim:
+        claimName: efs-static
+  # Create the Service for the pod
 ---
 kind: Service
 apiVersion: v1
@@ -41,7 +41,7 @@ spec:
   selector: # labels are used as selectors
     purpose: "efs-static-demo"
   ports:
-  - protocol: TCP
-    port: 80 # service port
-    targetPort: 80
-    nodePort: 30007
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80
+      nodePort: 30007
