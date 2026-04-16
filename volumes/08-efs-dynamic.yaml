@@ -1,0 +1,46 @@
+# Create the PVC  for  Efs
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-dynamic
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "efs-expense"
+  resources:
+    requests:
+      storage: 5Gi
+  # Create the Pv for EFS
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efs-dynamic
+  labels:
+    purpose: "efs-dynamic-demo"
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        - name: persistent-storage
+          mountPath: /usr/share/nginx/html
+  volumes:
+    - name: persistent-storage
+      persistentVolumeClaim:
+        claimName: efs-dynamic
+  # Create the Service for the pod
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-1a
+spec:
+  type: LoadBalancer
+  selector: # labels are used as selectors
+    purpose: "efs-dynamic-demo"
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80
+      nodePort: 30007
