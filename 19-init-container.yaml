@@ -16,5 +16,6 @@ spec:
         [
           "sh",
           "-c",
-          "for i in {1..10}; do sleep 10; if nslookup goofadfgle.com; then exit 0; fi; done; exit 1",
+          "for i in {1..10}; do sleep 10; if nslookup google.com; then exit 0; fi; done; exit 1",
+          # Start              wait for 10           
         ]
